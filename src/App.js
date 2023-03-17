@@ -7,13 +7,18 @@ import Review from './components/Review';
 import AverageReview from './components/AverageReview';
 import SearchTable from './components/SearchTable';
 
+import { useTheme } from './hooks/useTheme'
+import ThemeSelector from './components/ThemeSelector'
+import './App.css'
+
 function App() {
+  const { mode } = useTheme()
+
   const queryClient = new QueryClient();
   return (
-    <>
-
-      <>
+    <div className={`App ${mode}`}>
         <QueryClientProvider client={queryClient}>
+        <ThemeSelector />
           <Router>
             <Routes>
               <Route path="/payment" element={<Payment />} />
@@ -23,8 +28,7 @@ function App() {
             </Routes>
           </Router>
         </QueryClientProvider>
-      </>
-    </>
+    </div>
   );
 }
 

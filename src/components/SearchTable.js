@@ -79,7 +79,7 @@ function SearchTable() {
     });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {/* Search field */}
             <TextField
                 label="Search"
