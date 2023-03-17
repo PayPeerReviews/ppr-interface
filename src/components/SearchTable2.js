@@ -28,7 +28,7 @@ function SearchTable2() {
             console.log("User address", await web3Connection.getAddress());
 
             
-            const searchReview = new Model(web3Connection, ReviewPeer.output.abi, "0x2CAa3896fd54CaF10B0D9623a68F89025DF78a9F");
+            const searchReview = new Model(web3Connection, ReviewPeer.abi, "0x2CAa3896fd54CaF10B0D9623a68F89025DF78a9F");
             searchReview.start()
             console.log(searchReview)
             console.log(searchReview)

@@ -34,10 +34,10 @@ function SearchTable() {
 
                 // call smart contract 
 
-                console.log(ReviewPeer.output.abi)
+                console.log(ReviewPeer.abi)
                 const reviewPeerContract = new Contract(
-                    "0x2CAa3896fd54CaF10B0D9623a68F89025DF78a9F",
-                    ReviewPeer.output.abi,
+                    "0xA78695C0D7Fc03fb996e2339928e3e5Ef4bC568A",
+                    ReviewPeer.abi,
                     signer
                 );
 

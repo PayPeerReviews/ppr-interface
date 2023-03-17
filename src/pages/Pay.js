@@ -14,13 +14,14 @@ import { useState, useEffect, state } from "react"
 import { Card, CardContent, Typography, TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+const { RelayProvider } = require('@opengsn/provider')
 
 const Pay = () => {
     const [rating, setRating] = React.useState(0);
     const [averageRating, setAverageRating] = React.useState(0);
     const [isPending, setIsPending] = useState(false)
-    const [readyToReview, setReadyToReview] = useState(false)
-    const [readyToPay, setReadyToPay] = useState(true)
+    const [readyToReview, setReadyToReview] = useState(false) // TODO: change here after 
+    const [readyToPay, setReadyToPay] = useState(true) // TODO: change here after 
     const [showAverage, setShowAverage] = useState(false)
 
     const navigate = useNavigate();
@@ -28,44 +29,62 @@ const Pay = () => {
     const handleReviewSubmitClick = async () => {
         setIsPending(true);
 
-        let provider, library, accounts, network, address;
+        let provider, library, address, gsnProvider;
         try {
-            provider = await getWalletProvider().connect();
-            library = new ethers.providers.Web3Provider(provider);
-            accounts = await library.listAccounts();
-            network = await library.getNetwork();
+            const paymasterAddress = "0x7e4123407707516bD7a3aFa4E3ebCeacfcbBb107";
+            //provider = await getWalletProvider().connect();
+            gsnProvider = await RelayProvider.newProvider({
+                provider: window.ethereum,
+                config: {
+                    loggerConfiguration: { logLevel: 'debug' },
+                    paymasterAddress
+                }
+            }).init()
+
+            provider = new ethers.providers.Web3Provider(gsnProvider)
+            console.log("provider - ", provider)
+            
+            //library = new ethers.providers.Web3Provider(provider);
+            //console.log("library", library)
+
         } catch (error) {
             console.error(error)
             return;
         }
-        if (accounts) {
-            address = accounts[0];
-            const signer = await library.getSigner(address)
-            console.log(signer)
 
-            // call smart contract 
+        
+        console.log("signer - ",provider.getSigner());
+        // call smart contract 
 
-            console.log(ReviewPeer.output.abi)
-            const reviewPeerContract = new Contract(
-                "0x2CAa3896fd54CaF10B0D9623a68F89025DF78a9F",
-                ReviewPeer.output.abi,
-                signer
-            );
-
-            const tx = await reviewPeerContract.sendReview(rating);
-            console.log(tx);
-            tx.wait();
-
-            const tx2 = await reviewPeerContract.averageScore();
-
-            setAverageRating(parseInt(tx2, 16));
-            console.log();
-
-            setIsPending(false);
-            setReadyToPay(false)
-            setReadyToReview(false);
-            setShowAverage(true);
+        console.log(ReviewPeer.abi)
+        const reviewPeerContract = new ethers.Contract(
+            "0xA78695C0D7Fc03fb996e2339928e3e5Ef4bC568A",
+            ReviewPeer.abi,
+            provider.getSigner()
+        );
+        if(!window.ethereum){
+            alert('Aqui que  fode')
         }
+
+        
+        //await window.ethereum.send("eth_requestAccounts")
+        
+        const txOptions = {gasPrice: await provider.getGasPrice()}
+        const transaction = await reviewPeerContract.sendReview(rating, txOptions)
+        
+        console.log("transaction", transaction)
+        transaction.wait();
+
+        const tx2 = await reviewPeerContract.averageScore();
+
+        setAverageRating(parseInt(tx2, 16));
+        console.log();
+
+        setIsPending(false);
+        setReadyToPay(false)
+        setReadyToReview(false);
+        setShowAverage(true);
+
     };
 
     const handleSeeMoreClick = async () => {
@@ -89,13 +108,15 @@ const Pay = () => {
         if (accounts) {
             address = accounts[0];
             const signer = await library.getSigner(address)
-            console.log(signer)
+
+
+
+            //console.log(signer)
 
             // call smart contract 
-
-            console.log(PayPeer.abi)
+            //console.log(PayPeer.abi)
             const payPeerContract = new Contract(
-                "0x4344e8b579Fa41463a1b937dC8c1aF7EB6Ce791c",
+                "0xE694e6AB637b4254c8A7d64A75f608dB82d8a15e",
                 PayPeer.abi,
                 signer
             );
@@ -106,15 +127,38 @@ const Pay = () => {
                 signer
             );
 
-            const tx = await payPeerContract.hasRole('0x0000000000000000000000000000000000000000000000000000000000000000', "0xCABB828E80Fad884112E4fBBA7eA3dc86F387839");
-            console.log(tx);
 
-            const tx2 = await er20.approve('0x4344e8b579Fa41463a1b937dC8c1aF7EB6Ce791c', 1000000000000000);
-            const approvalResult = await tx2.wait();
-            console.log(approvalResult)
+            const domain = {
+                name: "PayPeerCoin", // token name
+                version: "1", //  The ‘version byte’ is fixed to 0x01
+                chainId: 5, // chainId in which is deployed
+                verifyingContract: "0xb5172ABAd457B2D68675B4f601b923258f7e5C07"
+            };
 
+            const types = {
+                Permit: [
+                    { name: "owner", type: "address" },
+                    { name: "spender", type: "address" },
+                    { name: "value", type: "uint256" },
+                    { name: "nonce", type: "uint256" },
+                    { name: "deadline", type: "uint256" }
+                ]
+            };
+            console.log(address)
+            const nounce = await er20.nonces(address);
+            console.log("nonces", nounce);
+            const value = {
+                owner: address, //owner of the token, the one that will sign the message
+                spender: "0xE694e6AB637b4254c8A7d64A75f608dB82d8a15e",  //spender - dApp smart contract
+                value: 1000000000000000, //amount to spend 
+                nonce: nounce, // need consult the ERC20 to get the next nonce
+                deadline: 1710373465 // deadline of the permission
+            };
 
-            const tx3 = await payPeerContract.pay('0xCABB828E80Fad884112E4fBBA7eA3dc86F387839', '0xb5172ABAd457B2D68675B4f601b923258f7e5C07', 1000000000000000)
+            let signature = await signer._signTypedData(domain, types, value);
+            let { v, r, s } = ethers.utils.splitSignature(signature);
+
+            const tx3 = await payPeerContract.payWithPermit('0xCABB828E80Fad884112E4fBBA7eA3dc86F387839', '0xb5172ABAd457B2D68675B4f601b923258f7e5C07', 1000000000000000, 1710373465, v, r, s)
             await tx3.wait();
             console.log(tx3);
 
@@ -134,26 +178,26 @@ const Pay = () => {
         <div className="pay">
             {isPending && <p className="loading">Loading...</p>}
             {!isPending && readyToPay &&
-             <div>
-                <Payment />
-                <StyledButton variant="contained" color="primary" onClick={handlePayClick}>
-                    Pay
-                </StyledButton>
-            </div> }
-             {!isPending && readyToReview &&
-            <div>
-                <Review rating={rating} setRating={setRating}/>
-                <StyledButton variant="contained" color="primary" onClick={handleReviewSubmitClick}>
-                    Submit
-                </StyledButton>
-            </div>}
+                <div>
+                    <Payment />
+                    <StyledButton variant="contained" color="primary" onClick={handlePayClick}>
+                        Pay
+                    </StyledButton>
+                </div>}
+            {!isPending && readyToReview &&
+                <div>
+                    <Review rating={rating} setRating={setRating} />
+                    <StyledButton variant="contained" color="primary" onClick={handleReviewSubmitClick}>
+                        Submit
+                    </StyledButton>
+                </div>}
             {!isPending && showAverage &&
-            <div>
-                <AverageReview averageRating={averageRating}/>
-                <StyledButton variant="contained" color="primary" onClick={handleSeeMoreClick}>
-                    See more
-                </StyledButton>
-            </div>}
+                <div>
+                    <AverageReview averageRating={averageRating} />
+                    <StyledButton variant="contained" color="primary" onClick={handleSeeMoreClick}>
+                        See more
+                    </StyledButton>
+                </div>}
         </div>
     );
 };
