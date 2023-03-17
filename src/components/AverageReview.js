@@ -8,6 +8,7 @@ import { Card, CardContent, Typography, TextField, Button, IconButton } from '@m
 import { styled } from '@mui/material/styles';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import { yellow } from '@mui/material/colors';
 
 const AverageReview = ( props ) => {
     const location = useLocation();
@@ -51,7 +52,7 @@ const AverageReview = ( props ) => {
                             key={value}
                             selected={value <= props.averageRating}
                         >
-                            {value <= props.averageRating ? <StarIcon /> : <StarBorderIcon />}
+                            {value <= props.averageRating ? <StarIcon sx={{ color: yellow[500] }}/> : <StarBorderIcon />}
                         </StyledIconButton>
                     ))}
                 </div>

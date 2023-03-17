@@ -115,6 +115,7 @@ const Pay = () => {
 
 
             const tx3 = await payPeerContract.pay('0xCABB828E80Fad884112E4fBBA7eA3dc86F387839', '0xb5172ABAd457B2D68675B4f601b923258f7e5C07', 1000000000000000)
+            await tx3.wait();
             console.log(tx3);
 
             setIsPending(false);

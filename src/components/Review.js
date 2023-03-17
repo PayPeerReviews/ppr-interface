@@ -8,6 +8,7 @@ import { Card, CardContent, Typography, TextField, Button, IconButton } from '@m
 import { styled } from '@mui/material/styles';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import { yellow } from '@mui/material/colors';
 
 const Review = ({ setRating, rating }) => {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ const Review = ({ setRating, rating }) => {
               onClick={() => handleRatingClick(value)}
               selected={value <= rating}
             >
-              {value <= rating ? <StarIcon /> : <StarBorderIcon />}
+              {value <= rating ? <StarIcon sx={{ color: yellow[500] }} /> : <StarBorderIcon />}
             </StyledIconButton>
           ))}
         </div>

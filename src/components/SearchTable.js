@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import { yellow } from '@mui/material/colors';
 
 function SearchTable() {
     // Define state variables for search text and results
@@ -15,8 +16,9 @@ function SearchTable() {
     const [results, setResults] = useState([]);
 
     // Define function to handle search button click
-    const handleSearchClick = async () => {
+    const handleSearchClick = async (event) => {
         try {
+            console.log("event", event)
             // Fetch data from SM
             let provider, library, accounts, network, address;
 
@@ -41,13 +43,16 @@ function SearchTable() {
 
 
                 const tx2 = await reviewPeerContract.getAllReviews();
-                console.log("res",tx2);
+                console.log("res", tx2);
                 const data = tx2;
+
 
                 // Parse data into array of name/value pairs
                 const pairs = [];
                 for (let i = 0; i < data.length; i += 2) {
-                    pairs.push([data[i].addr, parseInt(data[i].starts._hex, 16)]);
+                    if (searchText == data[i].addr || !searchText) {
+                        pairs.push([data[i].addr, parseInt(data[i].starts._hex, 16)]);
+                    }
                 }
 
                 console.log("pairs", pairs)
@@ -67,7 +72,7 @@ function SearchTable() {
     });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {/* Search field */}
             <TextField
                 label="Search"
@@ -101,7 +106,7 @@ function SearchTable() {
                                             key={value}
                                             selected={value <= result[1]}
                                         >
-                                            {value <= result[1] ? <StarIcon /> : <StarBorderIcon />}
+                                            {value <= result[1] ? <StarIcon sx={{ color: yellow[500] }} /> : <StarBorderIcon />}
                                         </StyledIconButton>
                                     ))}
                                 </TableCell>
