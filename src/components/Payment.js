@@ -58,23 +58,10 @@ const Payment = () => {
                 </Typography>
                 <StyledLine />
                 <Typography variant="body1" component="p" sx={{ mb: 2 }}>
-                    <span style={{ fontWeight: 'bold' }}>Appetizer:</span>
-                    <br />
-                    <span style={{ paddingLeft: '16px' }}>2x Escargots de Bourgogne</span>
-                    <span style={{ float: 'right' }}>$24.00</span>
-                    <br />
-                    <span style={{ paddingLeft: '16px' }}>2x Soupe à l'Oignon</span>
-                    <span style={{ float: 'right' }}>$20.00</span>
-                </Typography>
-                <StyledLine />
-                <Typography variant="body1" component="p" sx={{ mb: 2 }}>
                     <span style={{ fontWeight: 'bold' }}>Main Course:</span>
                     <br />
                     <span style={{ paddingLeft: '16px' }}>2x Boeuf Bourguignon</span>
                     <span style={{ float: 'right' }}>$54.00</span>
-                    <br />
-                    <span style={{ paddingLeft: '16px' }}>2x Poulet à la Moutarde</span>
-                    <span style={{ float: 'right' }}>$50.00</span>
                 </Typography>
                 <StyledLine />
                 <Typography variant="body1" component="p" sx={{ mb: 2 }}>
@@ -89,24 +76,18 @@ const Payment = () => {
                     <br />
                     <span style={{ paddingLeft: '16px' }}>1x Bottle of Red Wine</span>
                     <span style={{ float: 'right' }}>$50.00</span>
-                    <br />
-                    <span style={{ paddingLeft: '16px' }}>2x Mineral Water</span>
-                    <span style={{ float: 'right' }}>$6.00</span>
                 </Typography>
                 <StyledLine />
                 <Typography variant="body1" component="p" sx={{ mb: 2 }}>
-                    <span style={{ fontWeight: 'bold' }}>Subtotal:</span> $220.00
-                </Typography>
-                <Typography variant="body1" component="p" sx={{ mb: 2 }}>
-                    <span style={{ fontWeight: 'bold' }}>Tax:</span> $33.00
+                    <span style={{ fontWeight: 'bold' }}>Tax:</span> $13.60
                 </Typography>
                 <StyledLine />
                 <Typography variant="body1" component="p" sx={{ mb: 2 }}>
-                    <span style={{ fontWeight: 'bold' }}>Total:</span> $253.00
+                    <span style={{ fontWeight: 'bold' }}>Total:</span> $133.60
                 </Typography>
-
             </CardContent>
         </StyledCard>
+
 
     );
 };

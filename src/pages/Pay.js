@@ -14,6 +14,9 @@ import { useState, useEffect, state } from "react"
 import { Card, CardContent, Typography, TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+import LoadingSpinner from '../components/utils/loading-spinner/loading-spinner';
+
+
 const { RelayProvider } = require('@opengsn/provider')
 
 const Pay = () => {
@@ -185,7 +188,7 @@ const Pay = () => {
 
     return (
         <div className="pay">
-            {isPending && <p className="loading">Loading...</p>}
+            {isPending && <LoadingSpinner />}
             {!isPending && readyToPay &&
                 <div>
                     <Payment />
