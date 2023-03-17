@@ -9,18 +9,15 @@ import { styled } from '@mui/material/styles';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
-const AverageReview = ( ) => {
+const AverageReview = ( props ) => {
     const location = useLocation();
     const query = new URLSearchParams(location.search);
-    const averageScore = query.get('averageScore');
 
-    console.log(averageScore)
-    const handleSubmit = async () => {
-        //route home page
-    };
+    console.log("avg", props.averageRating)
+
 
     const StyledCard = styled(Card)({
-        maxWidth: 400,
+        maxWidth: 300,
         margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
@@ -28,15 +25,6 @@ const AverageReview = ( ) => {
         justifyContent: 'center',
         padding: '32px',
         textAlign: 'center',
-    });
-
-    const StyledTextField = styled(TextField)({
-        margin: '16px 0',
-        width: '100%',
-    });
-
-    const StyledButton = styled(Button)({
-        margin: '16px 8px 0 8px',
     });
 
     const StyledIconButton = styled(IconButton)({
@@ -61,16 +49,11 @@ const AverageReview = ( ) => {
                     {[1, 2, 3, 4, 5].map((value) => (
                         <StyledIconButton
                             key={value}
-                            selected={value <= averageScore}
+                            selected={value <= props.averageRating}
                         >
-                            {value <= averageScore ? <StarIcon /> : <StarBorderIcon />}
+                            {value <= props.averageRating ? <StarIcon /> : <StarBorderIcon />}
                         </StyledIconButton>
                     ))}
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <StyledButton variant="contained" color="primary" onClick={handleSubmit}>
-                        See more
-                    </StyledButton>
                 </div>
             </CardContent>
         </StyledCard>

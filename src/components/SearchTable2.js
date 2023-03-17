@@ -1,5 +1,6 @@
-import { getWalletProvider } from "../utils/ethereum-wallet-provider";
-import { Contract, ethers } from "ethers";
+import {Web3Connection, Model} from '@taikai/dappkit';
+
+
 import * as ReviewPeer from "../abis/ReviewPeer.json";
 
 import React, { useState } from 'react';
@@ -9,56 +10,48 @@ import { IconButton } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
-function SearchTable() {
+function SearchTable2() {
     // Define state variables for search text and results
     const [searchText, setSearchText] = useState('');
     const [results, setResults] = useState([]);
+
 
     // Define function to handle search button click
     const handleSearchClick = async () => {
         try {
             // Fetch data from SM
-            let provider, library, accounts, network, address;
+            const web3Connection = new Web3Connection({ web3Host: "https://goerli.infura.io/v3/d418881770d44945b1ca5702d098fdde" });
+    
 
-            provider = await getWalletProvider().connect();
-            library = new ethers.providers.Web3Provider(provider);
-            accounts = await library.listAccounts();
-            network = await library.getNetwork();
+            await web3Connection.start();
+            await web3Connection.connect(); // if a privateKey was provided, can be ignored
+            console.log("User address", await web3Connection.getAddress());
 
-            if (accounts) {
-                address = accounts[0];
-                const signer = await library.getSigner(address)
-                console.log(signer)
+            
+            const searchReview = new Model(web3Connection, ReviewPeer.output.abi, "0x2CAa3896fd54CaF10B0D9623a68F89025DF78a9F");
+            searchReview.start()
+            console.log(searchReview)
+            console.log(searchReview)
+            //return;
+            const receipt = await searchReview.callTx("getAllReviews");
+            //const tx2 = await searchReview.getAllReviews();
+                console.log("res", receipt);
+/*
+            const stakingContrat = new StakingContract(web3Connection, '0x2CAa3896fd54CaF10B0D9623a68F89025DF78a9F');
+            await stakingContrat.start();
 
-                // call smart contract 
+            await web3Connection.connect();
 
-                console.log(ReviewPeer.output.abi)
-                const reviewPeerContract = new Contract(
-                    "0x2CAa3896fd54CaF10B0D9623a68F89025DF78a9F",
-                    ReviewPeer.output.abi,
-                    signer
-                );
-
-
-                const tx2 = await reviewPeerContract.getAllReviews();
-                console.log("res",tx2);
-                const data = tx2;
-
-                // Parse data into array of name/value pairs
-                const pairs = [];
-                for (let i = 0; i < data.length; i += 2) {
-                    pairs.push([data[i].addr, parseInt(data[i].starts._hex, 16)]);
-                }
-
-                console.log("pairs", pairs)
-
-                // Update results state with name/value pairs
-                setResults(pairs);
-            }
+            console.log(await stakingContrat.availableTokens());
+  */
         } catch (error) {
             console.error(error);
         }
     }
+
+    const StyledButton = styled(Button)({
+        margin: '16px 8px 0 8px',
+    });
 
     const StyledIconButton = styled(IconButton)({
         padding: 0,
@@ -115,4 +108,4 @@ function SearchTable() {
     );
 }
 
-export default SearchTable;
+export default SearchTable2;

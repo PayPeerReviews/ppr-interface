@@ -2,7 +2,6 @@
 // ##
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 import WalletConnect from "@walletconnect/web3-provider";
-//import { Web3Connection } from '@taikai/dappkit';
 import Web3Modal from "web3modal";
 // ##
 

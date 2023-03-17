@@ -9,8 +9,7 @@ import { styled } from '@mui/material/styles';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
-const Review = () => {
-  const [rating, setRating] = React.useState(0);
+const Review = ({ setRating, rating }) => {
   const navigate = useNavigate();
 
   const handleRatingClick = (newRating) => {
@@ -18,43 +17,8 @@ const Review = () => {
     console.log(newRating)
   };
 
-  const handleSubmit = async () => {
-    let provider, library, accounts, network, address;
-    try {
-        provider = await getWalletProvider().connect();
-        library = new ethers.providers.Web3Provider(provider);
-        accounts = await library.listAccounts();
-        network = await library.getNetwork();
-    } catch (error) {
-        console.error(error)
-        return;
-    }
-    if (accounts) {
-        address = accounts[0];
-        const signer = await library.getSigner(address)
-        console.log(signer)
-
-        // call smart contract 
-
-        console.log(ReviewPeer.output.abi)
-        const reviewPeerContract = new Contract(
-            "0x2CAa3896fd54CaF10B0D9623a68F89025DF78a9F",
-            ReviewPeer.output.abi,
-            signer
-        );
-
-        //const tx = await reviewPeerContract.sendReview(rating);
-        //console.log(tx);
-
-        const tx2 = await reviewPeerContract.averageScore();
-        console.log(parseInt(tx2, 16));
-
-        navigate(`/average_review?averageScore=${parseInt(tx2, 16)}`);
-    }
-  };
-
   const StyledCard = styled(Card)({
-    maxWidth: 400,
+    maxWidth: 300,
     margin: '0 auto',
     display: 'flex',
     flexDirection: 'column',
@@ -62,15 +26,6 @@ const Review = () => {
     justifyContent: 'center',
     padding: '32px',
     textAlign: 'center',
-  });
-
-  const StyledTextField = styled(TextField)({
-    margin: '16px 0',
-    width: '100%',
-  });
-
-  const StyledButton = styled(Button)({
-    margin: '16px 8px 0 8px',
   });
 
   const StyledIconButton = styled(IconButton)({
@@ -101,11 +56,6 @@ const Review = () => {
               {value <= rating ? <StarIcon /> : <StarBorderIcon />}
             </StyledIconButton>
           ))}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <StyledButton variant="contained" color="primary" onClick={handleSubmit}>
-            Submit
-          </StyledButton>
         </div>
       </CardContent>
     </StyledCard>
