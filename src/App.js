@@ -1,24 +1,30 @@
 import logo from './logo.svg';
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css';
+import Payment from './components/Payment';
+import Review from './components/Review';
+import AverageReview from './components/AverageReview';
+import SearchTable from './components/SearchTable';
 
 function App() {
+  const queryClient = new QueryClient();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+
+      <>
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <Routes>
+              <Route path="/payment" element={<Payment />} />
+              <Route path="/review" element={<Review />} />
+              <Route path="/average_review" element={<AverageReview />} />
+              <Route path="/search" element={<SearchTable />} />
+            </Routes>
+          </Router>
+        </QueryClientProvider>
+      </>
+    </>
   );
 }
 
