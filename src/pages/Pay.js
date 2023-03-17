@@ -43,7 +43,7 @@ const Pay = () => {
 
             provider = new ethers.providers.Web3Provider(gsnProvider)
             console.log("provider - ", provider)
-            
+
             //library = new ethers.providers.Web3Provider(provider);
             //console.log("library", library)
 
@@ -52,8 +52,8 @@ const Pay = () => {
             return;
         }
 
-        
-        console.log("signer - ",provider.getSigner());
+
+        console.log("signer - ", provider.getSigner());
         // call smart contract 
 
         console.log(ReviewPeer.abi)
@@ -62,16 +62,16 @@ const Pay = () => {
             ReviewPeer.abi,
             provider.getSigner()
         );
-        if(!window.ethereum){
+        if (!window.ethereum) {
             alert('Aqui que  fode')
         }
 
-        
+
         //await window.ethereum.send("eth_requestAccounts")
-        
-        const txOptions = {gasPrice: await provider.getGasPrice()}
+
+        const txOptions = { gasPrice: await provider.getGasPrice() }
         const transaction = await reviewPeerContract.sendReview(rating, txOptions)
-        
+
         console.log("transaction", transaction)
         transaction.wait();
 
@@ -172,6 +172,15 @@ const Pay = () => {
     const StyledButton = styled(Button)({
         margin: '16px auto 0',
         display: 'block',
+        borderRadius: '8px',
+        padding: '12px 32px',
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        backgroundColor: '#007bff',
+        color: '#fff',
+        '&:hover': {
+            backgroundColor: '#0069d9',
+        },
     });
 
     return (

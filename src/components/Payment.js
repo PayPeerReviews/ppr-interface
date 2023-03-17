@@ -10,41 +10,107 @@ import { styled } from '@mui/material/styles';
 const Payment = () => {
 
     const StyledCard = styled(Card)({
-        maxWidth: 300,
+        maxWidth: 350,
         margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '32px',
+        padding: '16px',
+        borderRadius: '12px',
+        boxShadow: '0 0 8px rgba(0, 0, 0, 0.2)',
+        backgroundColor: '#fff',
+        '@media (max-width: 350px)': {
+            maxWidth: '100%',
+        },
     });
 
     const StyledButton = styled(Button)({
         margin: '16px auto 0',
         display: 'block',
+        borderRadius: '8px',
+        padding: '12px 32px',
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        backgroundColor: '#007bff',
+        color: '#fff',
+        '&:hover': {
+            backgroundColor: '#0069d9',
+        },
+    });
+
+    const StyledLine = styled('hr')({
+        width: '100%',
+        height: '1px',
+        border: 'none',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        margin: '16px 0',
     });
 
     return (
         <StyledCard>
             <CardContent>
-                <Typography variant="h5" component="h2">
+                <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
                     Your Bill Description
                 </Typography>
                 <Typography color="textSecondary" sx={{ mb: 2 }}>
-                    Restaurant xpto
+                    <span style={{ fontWeight: 'bold' }}>Restaurant:</span> Chez Nous
                 </Typography>
-                <Typography variant="body2" component="p" sx={{ mb: 2 }}>
-                    Item 1: 10.00 PPC
+                <StyledLine />
+                <Typography variant="body1" component="p" sx={{ mb: 2 }}>
+                    <span style={{ fontWeight: 'bold' }}>Appetizer:</span>
                     <br />
-                    Item 2: 5.00 PPC
+                    <span style={{ paddingLeft: '16px' }}>2x Escargots de Bourgogne</span>
+                    <span style={{ float: 'right' }}>$24.00</span>
                     <br />
-                    Tax: 1.50 PPC
-                    <br />
-                    Total: 16.50 PPC
+                    <span style={{ paddingLeft: '16px' }}>2x Soupe à l'Oignon</span>
+                    <span style={{ float: 'right' }}>$20.00</span>
                 </Typography>
+                <StyledLine />
+                <Typography variant="body1" component="p" sx={{ mb: 2 }}>
+                    <span style={{ fontWeight: 'bold' }}>Main Course:</span>
+                    <br />
+                    <span style={{ paddingLeft: '16px' }}>2x Boeuf Bourguignon</span>
+                    <span style={{ float: 'right' }}>$54.00</span>
+                    <br />
+                    <span style={{ paddingLeft: '16px' }}>2x Poulet à la Moutarde</span>
+                    <span style={{ float: 'right' }}>$50.00</span>
+                </Typography>
+                <StyledLine />
+                <Typography variant="body1" component="p" sx={{ mb: 2 }}>
+                    <span style={{ fontWeight: 'bold' }}>Dessert:</span>
+                    <br />
+                    <span style={{ paddingLeft: '16px' }}>2x Crème Brûlée</span>
+                    <span style={{ float: 'right' }}>$16.00</span>
+                </Typography>
+                <StyledLine />
+                <Typography variant="body1" component="p" sx={{ mb: 2 }}>
+                    <span style={{ fontWeight: 'bold' }}>Drinks:</span>
+                    <br />
+                    <span style={{ paddingLeft: '16px' }}>1x Bottle of Red Wine</span>
+                    <span style={{ float: 'right' }}>$50.00</span>
+                    <br />
+                    <span style={{ paddingLeft: '16px' }}>2x Mineral Water</span>
+                    <span style={{ float: 'right' }}>$6.00</span>
+                </Typography>
+                <StyledLine />
+                <Typography variant="body1" component="p" sx={{ mb: 2 }}>
+                    <span style={{ fontWeight: 'bold' }}>Subtotal:</span> $220.00
+                </Typography>
+                <Typography variant="body1" component="p" sx={{ mb: 2 }}>
+                    <span style={{ fontWeight: 'bold' }}>Tax:</span> $33.00
+                </Typography>
+                <StyledLine />
+                <Typography variant="body1" component="p" sx={{ mb: 2 }}>
+                    <span style={{ fontWeight: 'bold' }}>Total:</span> $253.00
+                </Typography>
+
             </CardContent>
         </StyledCard>
+
     );
 };
 
 export default Payment;
+
+

@@ -9,6 +9,8 @@ import { IconButton } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import { yellow } from '@mui/material/colors';
+import { toBePartiallyChecked } from "@testing-library/jest-dom/dist/matchers";
+import { exit } from "process";
 
 function SearchTable() {
     // Define state variables for search text and results
@@ -53,6 +55,11 @@ function SearchTable() {
                     if (searchText == data[i].addr || !searchText) {
                         pairs.push([data[i].addr, parseInt(data[i].starts._hex, 16)]);
                     }
+                    //TODO: only for test propose 
+                    if (searchText == "Chez Nous") {
+                        pairs.push([data[i].addr, parseInt(data[i].starts._hex, 16)]);
+                        break;
+                    }
                 }
 
                 console.log("pairs", pairs)
@@ -72,26 +79,26 @@ function SearchTable() {
     });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '0 auto', maxWidth: '600px' }}>
             {/* Search field */}
             <TextField
                 label="Search"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
-                style={{ width: '50%', marginBottom: '1rem', marginTop: '2rem' }}
+                style={{ width: '100%', marginBottom: '1rem', marginTop: '2rem' }}
             />
 
             {/* Search button */}
-            <Button variant="contained" onClick={handleSearchClick} style={{ marginBottom: '1rem' }}>
+            <Button variant="contained" onClick={handleSearchClick} style={{ marginBottom: '1rem', width: '100%' }}>
                 Search
             </Button>
 
             {/* Results table */}
-            <TableContainer component={Paper} style={{ width: '50%' }}>
+            <TableContainer component={Paper} style={{ width: '100%' }}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Company</TableCell>
+                            <TableCell style={{ minWidth: '120px' }}>Company</TableCell>
                             <TableCell>Score</TableCell>
                             <TableCell>Badge</TableCell>
                         </TableRow>
@@ -99,7 +106,7 @@ function SearchTable() {
                     <TableBody>
                         {results.map((result, index) => (
                             <TableRow key={index}>
-                                <TableCell>{result[0]}</TableCell>
+                                <TableCell style={{ minWidth: '120px', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{result[0]}</TableCell>
                                 <TableCell>
                                     {[1, 2, 3, 4, 5].map((value) => (
                                         <StyledIconButton

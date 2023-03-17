@@ -1,7 +1,3 @@
-import { getWalletProvider } from "../utils/ethereum-wallet-provider";
-import { Contract, ethers } from "ethers";
-import * as ReviewPeer from "../abis/ReviewPeer.json";
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography, TextField, Button, IconButton } from '@mui/material';
@@ -19,14 +15,27 @@ const Review = ({ setRating, rating }) => {
   };
 
   const StyledCard = styled(Card)({
-    maxWidth: 300,
+    maxWidth: 350,
     margin: '0 auto',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '32px',
-    textAlign: 'center',
+    padding: '16px',
+    borderRadius: '12px',
+    boxShadow: '0 0 8px rgba(0, 0, 0, 0.2)',
+    backgroundColor: '#fff',
+    '@media (max-width: 350px)': {
+      maxWidth: '100%',
+    },
+  });
+
+  const StyledLine = styled('hr')({
+    width: '100%',
+    height: '1px',
+    border: 'none',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    margin: '16px 0',
   });
 
   const StyledIconButton = styled(IconButton)({
@@ -38,15 +47,16 @@ const Review = ({ setRating, rating }) => {
   return (
     <StyledCard>
       <CardContent>
-        <Typography variant="h5" component="h2">
+        <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
           Review
         </Typography>
         <Typography color="textSecondary" sx={{ mb: 2 }}>
-          Restaurant xpto
+          <span style={{ fontWeight: 'bold' }}>Restaurant:</span> Chez Nous
         </Typography>
-        <Typography variant="body2" component="p" sx={{ mb: 2 }}>
-          Please rate your experience:
+        <Typography variant="h7" component="h3" sx={{ fontWeight: 'bold', mb: 2 }}>
+          <span>Please rate your experience</span>
         </Typography>
+        <StyledLine />
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
           {[1, 2, 3, 4, 5].map((value) => (
             <StyledIconButton
