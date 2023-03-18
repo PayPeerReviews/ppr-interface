@@ -23,9 +23,9 @@ const Pay = () => {
     const [rating, setRating] = React.useState(0);
     const [averageRating, setAverageRating] = React.useState(0);
     const [isPending, setIsPending] = useState(false)
-    const [readyToReview, setReadyToReview] = useState(false) // TODO: change here after 
-    const [readyToPay, setReadyToPay] = useState(true) // TODO: change here after 
-    const [showAverage, setShowAverage] = useState(false)
+    const [readyToReview, setReadyToReview] = useState(true) // TODO: change here after default :false
+    const [readyToPay, setReadyToPay] = useState(false) // TODO: change here after default :true
+    const [showAverage, setShowAverage] = useState(false)  // TODO: change here after  default :false
 
     const navigate = useNavigate();
 
@@ -71,8 +71,14 @@ const Pay = () => {
 
 
         //await window.ethereum.send("eth_requestAccounts")
+        
+        const res = await provider.getGasPrice();
+       
+        console.log("gasbig",res)
+        console.log("gasd", parseInt(res._hex, 16))
 
-        const txOptions = { gasPrice: await provider.getGasPrice() }
+        //const txOptions = { gasPrice: await provider.getGasPrice() }
+        const txOptions = { gasPrice: "497549631" }
         const transaction = await reviewPeerContract.sendReview(rating, txOptions)
 
         console.log("transaction", transaction)
