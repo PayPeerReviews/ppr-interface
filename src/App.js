@@ -23,6 +23,7 @@ function App() {
               <Route path="/search" element={<SearchTable />} />
               <Route path="/search2" element={<SearchTable2 />} />
               <Route path="/pay" element={<Pay />} />
+              <Route path="/" element={<Pay />} />
             </Routes>
           </Router>
         </QueryClientProvider>
